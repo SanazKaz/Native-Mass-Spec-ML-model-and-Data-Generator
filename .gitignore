@@ -4,7 +4,6 @@
 
 #output of data generator
 /*.npz
-/*.pkl
 /*.h5
 /*.csv
 /*.pt

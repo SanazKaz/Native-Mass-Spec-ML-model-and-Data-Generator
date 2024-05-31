@@ -26,34 +26,35 @@ class NativeMassSpecSimulator:
         MS = complex_mass
         MA = self.Q * MS**0.76
         ME = MS + MA
+
+        # Calculate the maximum charge state based on the complex mass
+        max_charge = int(0.078 * ME**0.5)
+        
+        # Calculate the average charge state based on the complex mass
         ZA = 0.0467 * ME**0.533 + self.F
-        TT = np.exp(-(np.arange(self.maxcharge) - 50)**2 / self.chargewidth)
+        
+        TT = np.exp(-(np.arange(max_charge) - ZA)**2 / self.chargewidth)
         sumT = np.sum(TT)
-        WC = np.zeros(self.maxcharge)
+        WC = np.zeros(max_charge)
         DE = np.zeros_like(WC)
 
-        for charge in range(self.maxcharge):
+        for charge in range(max_charge):
             WC[charge] = np.exp(-(charge + 1 - ZA)**2 / self.chargewidth) / sumT
             DE[charge] = (1 - np.exp(-1620 * (9.1 * (charge + 1) / ME)**1.75)) * self.AO * self.VA if ME > 0 else 0
 
         WD = WC * DE
 
-        for charge in range(1, self.maxcharge + 1):
-            mz = ME / charge
-            while mz >= 20000 and charge < self.maxcharge: # if the mz is too high then increase the charge - temporary fix as it is not ideal and charge should increase with mass
-                charge += 13 # this is a temporary fix to increase the charge if the mz is too high - 13 is the minimum req for 250k/20k to be within range
-                mz = ME / charge
-                if mz >= 20000:
-                    print(f"skipping this one")
-                    break
+        min_charge = max(5, int(ME / 20000) + 1)  # Ensure minimum charge state is at least 5
 
+        for charge in range(min_charge, max_charge + 1):
+            mz = ME / charge
+                        
             if mz <= 20000:
                 lower_limit = max(1, int(mz - self.resolution / 10))
                 upper_limit = min(20000, int(mz + self.resolution / 10))
                 for axis in range(lower_limit, upper_limit):
                     spread = np.exp(-((axis - mz)**2) / (2 * (self.resolution / 100)**2))
                     spectrum[axis] += WD[charge - 1] * spread
-
 
         return spectrum
     

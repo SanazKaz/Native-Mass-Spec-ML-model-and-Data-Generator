@@ -1,0 +1,27 @@
+# mac byproduct file to ignore
+.DS_Store
+/__pycache__/
+
+#output of data generator
+/*.npz
+/*.pkl
+/*.h5
+/*.csv
+/*.txt
+/*.pt
+/*.pth
+
+#output of wandb
+wandb/
+
+# Compiled bytecode files
+*.pyc
+__pycache__/
+
+# Saved model files
+/*.pth
+
+# Other generated files or directories
+*.log
+*.cache
+*.temp

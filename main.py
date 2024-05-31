@@ -6,8 +6,8 @@ import torch
 from train_eval.eval import evaluate
 
 # Load the data
-x_data = load_data("/Users/sanazkazeminia/Documents/Mass_Spec_project/Mass_Spec_ML_Project/spectra.pkl") # replace with actual path
-y_data = load_data("/Users/sanazkazeminia/Documents/Mass_Spec_project/Mass_Spec_ML_Project/matrices.pkl") # replace with actual path
+x_data = load_data("/Data_generation/spectra.pkl") # replace with actual path
+y_data = load_data("Data_generation/matrices.pkl") # replace with actual path
 flattened_y = flatten_matrices(y_data)
 
 # Split the data into train, validation, and test sets
@@ -23,14 +23,14 @@ lr = 0.000001
 optimizer = get_optimiser(model, lr)
 scheduler = scheduler(optimizer, base_lr=lr, max_lr=1e-4, step_size_up=2000, mode='triangular2')
 criterion = criterion()
-num_epochs = 1
+num_epochs = 10
 threshold = 0.5
 
 # Train the model
 train_losses, val_losses, y_true_val, y_pred_val = train(model, train_loader, val_loader, optimizer, scheduler, criterion, num_epochs, threshold)
 
 y_true_test, y_pred_test, X_true_test, test_loss = evaluate(model, test_loader, criterion)
-print("Evaluation on test set:", test_loss)
+print("loss on test set:", test_loss)
 
 
 # Save the trained model

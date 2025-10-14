@@ -9,9 +9,7 @@ Setting Up the Environment:
 
 To set up the environment and install the required packages for this project, follow these steps:
 
-Clone the repository:
-
-  git clone https://github.com/your-username/your-repository.git
+Clone the repository
 
 Navigate to the project directory:
 
@@ -32,14 +30,11 @@ For Unix/Linux:
 For Windows:
  myenv\Scripts\activate
 
-
-
 Install the required packages:
  pip install -r requirements.txt
 This command will install all the packages listed in the requirements.txt file.
 
 That's it! You now have the environment set up and the necessary dependencies installed to run the project.
-
 
  ____________________________________
 
